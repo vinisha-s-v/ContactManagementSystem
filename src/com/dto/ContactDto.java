@@ -1,6 +1,6 @@
-package com.model;
+package com.dto;
 
-public class Contact {
+public class ContactDto {
 	
 	 private int id;
 	    private String firstName;
@@ -8,9 +8,9 @@ public class Contact {
 	    private String email;
 	    private String phoneNumber;
 
-	    public Contact() {}
+	    public ContactDto() {}
 
-	    public Contact(int id, String firstName, String lastName, String email, String phoneNumber) {
+	    public ContactDto(int id, String firstName, String lastName, String email, String phoneNumber) {
 	        this.id = id;
 	        this.firstName = firstName;
 	        this.lastName = lastName;
@@ -58,5 +58,5 @@ public class Contact {
 			this.phoneNumber = phoneNumber;
 		}
 	    
-	   
+
 }
