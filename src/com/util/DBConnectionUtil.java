@@ -8,6 +8,10 @@ import org.slf4j.LoggerFactory;
 
 public class DBConnectionUtil {
 	
+	DBConnectionUtil(){
+		logger.info("DB connection calling...");
+	}
+	
     private static final Logger logger = LoggerFactory.getLogger(DBConnectionUtil.class);	
 	private static final String URL = "jdbc:postgresql://localhost:5432/cms";
 	private static final String USER = "postgres";
