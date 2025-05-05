@@ -15,7 +15,7 @@ public class DBConnectionUtil {
     private static final Logger logger = LoggerFactory.getLogger(DBConnectionUtil.class);	
 	private static final String URL = "jdbc:postgresql://localhost:5432/cms";
 	private static final String USER = "postgres";
-    private static final String PASS = "msRashid276";
+    private static final String PASS = "msRashid@276";
     
     public static void init() {
     	try {
