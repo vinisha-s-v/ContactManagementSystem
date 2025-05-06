@@ -35,21 +35,35 @@ public class ContactController {
 
 		@Override
 		public void handle(HttpExchange exchange) throws IOException {	
-			String method = exchange.getRequestMethod();
-			URI uri = exchange.getRequestURI();
-			String path = uri.getPath();
-			String[] pathParts = path.split("/");
-			int id = -1;
-			if(pathParts.length == 3) {
-				id = Integer.parseInt(pathParts[2]);
-			}
 			
-			switch(method) {
-				case "GET" :
-					List<ContactDto> contacts = service.getAllContacts();
-					respond(exchange,contacts);
-					break;
-			}
+			try {
+				String method = exchange.getRequestMethod();
+				URI uri = exchange.getRequestURI();
+				String path = uri.getPath();
+				String[] pathParts = path.split("/");
+				int id = -1;
+				if(pathParts.length == 3) {
+					id = Integer.parseInt(pathParts[2]);
+				}
+				
+				switch(method) {
+					case "GET" :
+						List<ContactDto> contacts = service.getAllContacts();
+						respond(exchange,contacts);
+						break;
+					  default:
+			                // Unsupported method
+			                exchange.sendResponseHeaders(405, -1); 
+				}
+			}catch (Exception e) {
+		        e.printStackTrace();  // Show error in console
+		        String errorMessage = "{\"error\":\"Internal Server Error\"}";
+		        exchange.sendResponseHeaders(500, errorMessage.getBytes().length);
+		        OutputStream os = exchange.getResponseBody();
+		        os.write(errorMessage.getBytes());
+		        os.close();
+		    }
+			
 		}
 		
 		
