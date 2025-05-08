@@ -9,4 +9,6 @@ public interface ContactDao {
 	List<ContactDto> findAll();
 	
 	void save(ContactDto contact);
+	
+	ContactDto findById(int id);
 }
