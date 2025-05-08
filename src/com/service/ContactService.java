@@ -13,4 +13,8 @@ public class ContactService {
 		public List<ContactDto> getAllContacts(){
 			return dao.findAll();	
 		}
+		
+		public void addContact(ContactDto contact) {
+			dao.save(contact);
+		}
 }

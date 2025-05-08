@@ -1,6 +1,7 @@
 package com.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -18,11 +19,11 @@ public class ContactDaoImp implements ContactDao{
 		List<ContactDto> listContact = new ArrayList<>();
 		
 		String sql = "SELECT * FROM contactsschema.contacts";
-		try {
+		try (
 			Connection conn = DBConnectionUtil.getConnection();
 			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(sql);
-			
+			ResultSet rs = stmt.executeQuery(sql);)
+			{
 			while(rs.next()) {
 				listContact.add(new ContactDto(
 						rs.getInt("id"),
@@ -37,4 +38,23 @@ public class ContactDaoImp implements ContactDao{
 		return listContact;
 	}
 
+	@Override
+	public void save(ContactDto contact) {
+		
+		String sql = "INSERT INTO contacts(firstname, lastname, phonenumber) VALUES (?,?,?)";
+		try (
+			Connection conn = DBConnectionUtil.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(sql);)
+			{
+				stmt.setString(1, contact.getFirstName());
+	            stmt.setString(2, contact.getLastName());
+	            stmt.setString(3, contact.getPhoneNumber());
+	            stmt.executeUpdate();
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+	
+	}
+	
 }

@@ -2,18 +2,24 @@ package com.controller;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URI;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.dto.ContactDto;
 import com.google.gson.Gson;
+import com.main.Main;
 import com.service.ContactService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 public class ContactController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(ContactController.class);
 		
 	
 	public static void registerRoutes(HttpServer httpServer) {
@@ -54,6 +60,17 @@ public class ContactController {
 					  default:
 			                // Unsupported method
 			                exchange.sendResponseHeaders(405, -1); 
+			                
+					  case "POST" :
+						  try {
+							  ContactDto newContact = gson.fromJson(new InputStreamReader(exchange.getRequestBody()), ContactDto.class);
+							  service.addContact(newContact);
+							  respond(exchange,newContact);
+						  }catch(Exception e) {
+							  logger.error("Exception occurs in adding contact"+e);
+							  respond(exchange,"invalid data");
+						  }
+						 
 				}
 			}catch (Exception e) {
 		        e.printStackTrace();  // Show error in console
