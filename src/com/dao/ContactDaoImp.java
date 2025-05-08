@@ -17,8 +17,9 @@ public class ContactDaoImp implements ContactDao{
 	public List<ContactDto> findAll() {
 		
 		List<ContactDto> listContact = new ArrayList<>();
-		
-		String sql = "SELECT * FROM contactsschema.contacts";
+
+		String sql = "SELECT * "
+				+ "FROM contactsschema.contacts";
 		try (
 			Connection conn = DBConnectionUtil.getConnection();
 			Statement stmt = conn.createStatement();
@@ -41,7 +42,7 @@ public class ContactDaoImp implements ContactDao{
 	@Override
 	public void save(ContactDto contact) {
 		
-		String sql = "INSERT INTO contacts(firstname, lastname, phonenumber) VALUES (?,?,?)";
+		String sql = "INSERT INTO contactsschema.contacts(firstname, lastname, phonenumber) VALUES (?,?,?)";
 		try (
 			Connection conn = DBConnectionUtil.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(sql);)
@@ -55,6 +56,33 @@ public class ContactDaoImp implements ContactDao{
 			e.printStackTrace();
 		}
 	
+	}
+
+	@Override
+	public ContactDto findById(int id) {
+		
+		String sql = "SELECT * FROM contactsschema.contacts WHERE id=?";
+		try (
+				Connection conn = DBConnectionUtil.getConnection();
+				PreparedStatement stmt = conn.prepareStatement(sql);
+			)
+		{
+			stmt.setInt(1, id);
+			ResultSet rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				return new ContactDto(
+						rs.getInt("id"),
+                        rs.getString("firstname"),
+                        rs.getString("lastname"),
+                        rs.getString("phonenumber")
+						);
+						
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 }

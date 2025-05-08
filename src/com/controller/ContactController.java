@@ -54,8 +54,17 @@ public class ContactController {
 				
 				switch(method) {
 					case "GET" :
-						List<ContactDto> contacts = service.getAllContacts();
-						respond(exchange,contacts);
+						if(id!=-1) {
+							ContactDto contact = service.getContactByid(id);
+							if (contact != null) {
+	                            respond(exchange, contact);
+	                        } else {
+	                            respond(exchange, "Contact not found");
+	                        }
+						}else {
+							List<ContactDto> contacts = service.getAllContacts();
+							respond(exchange,contacts);
+						}
 						break;
 					  default:
 			                // Unsupported method

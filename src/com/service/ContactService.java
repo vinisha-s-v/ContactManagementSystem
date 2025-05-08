@@ -17,4 +17,8 @@ public class ContactService {
 		public void addContact(ContactDto contact) {
 			dao.save(contact);
 		}
+		
+		public ContactDto getContactByid(int id) {
+			return dao.findById(id);
+		}
 }
