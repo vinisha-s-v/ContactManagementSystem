@@ -66,9 +66,8 @@ public class ContactController {
 							respond(exchange,contacts);
 						}
 						break;
-					  default:
-			                // Unsupported method
-			                exchange.sendResponseHeaders(405, -1); 
+					  
+			                
 			                
 					  case "POST" :
 						  try {
@@ -79,7 +78,40 @@ public class ContactController {
 							  logger.error("Exception occurs in adding contact"+e);
 							  respond(exchange,"invalid data");
 						  }
-						 
+						  break;
+						  
+					  case "PUT" :
+						  if(id != -1) {
+							  try {
+								 ContactDto updationContact = gson.fromJson(new InputStreamReader(exchange.getRequestBody()), ContactDto.class);
+								 updationContact.setId(id);
+								 service.updateContact(updationContact);
+								 respond(exchange,updationContact);
+							  }catch(Exception e) {
+								  logger.error("Error while updating contact", e);
+							  }
+							  break;
+						  }
+						  
+					  case "DELETE" :
+						  if(id != -1) {
+							  try {
+								 ContactDto contact = service.getContactByid(id);
+								 if(contact!=null) {
+									 service.deleteContact(id);
+									 respond(exchange, "Contact deleted successfully");
+								 }else {
+									 logger.info("No contact exists with id: " + id);
+						              respond(exchange, "Contact not found");
+								 }
+							  }catch(Exception e) {
+								  logger.error("Error while updating contact", e);
+							  }
+						  }
+						 break; 
+					  default:
+						// Unsupported method
+			            exchange.sendResponseHeaders(405, -1); 
 				}
 			}catch (Exception e) {
 		        e.printStackTrace();  // Show error in console
