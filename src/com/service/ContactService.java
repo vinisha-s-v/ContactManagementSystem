@@ -21,4 +21,12 @@ public class ContactService {
 		public ContactDto getContactByid(int id) {
 			return dao.findById(id);
 		}
+
+		public void updateContact(ContactDto updationContact) {
+			dao.update(updationContact);
+		}
+
+		public void deleteContact(int id) {
+			dao.delete(id);
+		}
 }

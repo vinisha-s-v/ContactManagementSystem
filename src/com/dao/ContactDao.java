@@ -11,4 +11,8 @@ public interface ContactDao {
 	void save(ContactDto contact);
 	
 	ContactDto findById(int id);
+
+	void update(ContactDto updationContact);
+
+	void delete(int id);
 }

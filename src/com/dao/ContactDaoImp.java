@@ -61,7 +61,8 @@ public class ContactDaoImp implements ContactDao{
 	@Override
 	public ContactDto findById(int id) {
 		
-		String sql = "SELECT * FROM contactsschema.contacts WHERE id=?";
+		String sql = "SELECT * "
+				+ "FROM contactsschema.contacts WHERE id=?";
 		try (
 				Connection conn = DBConnectionUtil.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(sql);
@@ -83,6 +84,41 @@ public class ContactDaoImp implements ContactDao{
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public void update(ContactDto updationContact) {
+		String sql = "UPDATE contactsschema.contacts SET firstname=?,lastname=?,phonenumber=? WHERE id=?";
+		
+		try(
+				Connection conn = DBConnectionUtil.getConnection();
+				PreparedStatement stmt = conn.prepareStatement(sql);
+		   )
+		{
+			stmt.setString(1, updationContact.getFirstName());
+			stmt.setString(2, updationContact.getLastName());
+			stmt.setString(3, updationContact.getPhoneNumber());
+			stmt.setInt(4, updationContact.getId());
+			stmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void delete(int id) {
+		String sql = "DELETE FROM contactsschema.contacts WHERE id=?";
+		
+		try(
+				Connection conn = DBConnectionUtil.getConnection();
+				PreparedStatement stmt = conn.prepareStatement(sql);
+		   )
+		{
+			stmt.setInt(1, id);
+			stmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
